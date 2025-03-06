@@ -43,10 +43,25 @@
 
       <button
         id="start-free-play"
-        :disabled="mode === 'Free Play' || !strokes.length"
+        :disabled="mode === 'Free Play' || mode === 'VRChat Play' || !strokes.length"
         @click="freePlay()"
       >
-        <span>Free Play</span> <span style="font-size: 12px">(Space)</span>
+        <span>Free Play</span>
+      </button>
+
+      <button
+        id="vrchat-play"
+        :disabled="mode === 'VRChat Play' || mode === 'Free Play'"
+        @click="vrchatPlay()"
+      >
+        <span>VRChat Play</span> <span style="font-size: 12px">(Space)</span>
+      </button>
+
+      <button
+        id="vrchat-reset"
+        @click="vrchatReset()"
+      >
+        <span>VRChat Reset</span>
       </button>
 
       <button
@@ -100,7 +115,7 @@
           <settings-icon class="app-settings" :disabled="mode !== 'Stopped' ? '' : null" />
         </n-dropdown>
       </span>
-      <span ref="logo">Ayva Stroker <span class="ayva">Lite</span>
+      <span ref="logo">Ayva Stroker <span class="ayva">For VRChat</span>
       </span>
       <span style="margin-left: 2rem">
         <a
@@ -130,6 +145,7 @@ import AyvaModal from './components/AyvaModal.vue';
 import AyvaFreePlay from './components/AyvaFreePlay.vue';
 import AyvaMode from './components/AyvaMode.vue';
 import AyvaController from './lib/controller.js';
+import VRChatController from './lib/vrchatcontroller.js';
 import AyvaReleaseNotes from './components/AyvaReleaseNotes.vue';
 import AyvaLicense from './components/AyvaLicense.vue';
 import Storage from './lib/ayva-storage';
@@ -143,6 +159,7 @@ import RubjoyBLEDevice from './lib/rubjoy-ble-device.js';
 const ayva = createAyva();
 
 let controller;
+let vrchatcontroller;
 let emulator;
 
 export default {
@@ -179,6 +196,8 @@ export default {
 
   setup () {
     const notification = useNotification();
+    vrchatcontroller = new VRChatController();
+    vrchatcontroller.bind(ayva);
     return {
       notify: notification,
     };
@@ -320,10 +339,10 @@ export default {
         this.stop();
       } else if (noModals && event.key === ' ') {
         // Toggle Free Play Mode on Space Click
-        if (this.mode === 'Free Play') {
+        if (this.mode === 'VRChat Play') {
           this.stop();
         } else {
-          this.freePlay();
+          this.vrchatPlay();
         }
       }
     });
@@ -424,6 +443,15 @@ export default {
       this.mode = 'Free Play';
     },
 
+    vrchatPlay () {
+      this.mode = 'VRChat Play';
+      this.startVRChatController();
+    },
+
+    vrchatReset () {
+      vrchatcontroller.handlereset();
+    },
+
     getBpm () {
       return Number(this.$refs.bpmSlider.get());
     },
@@ -449,6 +477,11 @@ export default {
 
     clearBpmAnimation () {
       cancelAnimationFrame(this.bpmAnimationFrame);
+    },
+
+    startVRChatController () {
+      vrchatcontroller.startControl();
+      ayva.do(vrchatcontroller);
     },
 
     startController () {
@@ -496,12 +529,13 @@ export default {
     },
 
     home () {
-      ayva.stop();
+      this.stop();
       ayva.home();
     },
 
     stop () {
       ayva.stop();
+      vrchatcontroller.stop();
     },
 
     onAyvaStop () {

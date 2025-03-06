@@ -29,7 +29,7 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
     "@types/events": "^3.0.0",
-    "@types/node": "^18.8.4",
+    "@types/node": "^18.19.79",
     "@vitejs/plugin-vue": "^2.3.1",
     "@vue/eslint-config-prettier": "^7.0.0",
     "ayvajs": "0.18.0",
