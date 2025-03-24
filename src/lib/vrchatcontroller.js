@@ -89,7 +89,7 @@ class VRChatController extends GeneratorBehavior {
   }
 
   applyData (data) {
-    if (this.reset) {
+    if (this.calibrate) {
       if (data.x > this.max_x) {
         this.max_x = data.x;
       }
@@ -218,8 +218,8 @@ class VRChatController extends GeneratorBehavior {
     );
   }
 
-  handlereset () {
-    if (this.reset) {
+  handlecalibrate () {
+    if (this.calibrate) {
       if (this.max_x === this.min_x || this.max_y === this.min_y || this.max_z === this.min_z) {
         alert('校准异常');
         this.max_x = -999;
@@ -235,7 +235,7 @@ class VRChatController extends GeneratorBehavior {
         this.max_yaw = -999;
         this.min_yaw = 999;
       }
-      this.reset = false;
+      this.calibrate = false;
       storage.save('minmax', {
         max_x: this.max_x,
         max_y: this.max_y,
@@ -266,7 +266,7 @@ class VRChatController extends GeneratorBehavior {
     this.min_yaw = 999;
     this.max_roll = -999;
     this.min_roll = 999;
-    this.reset = true;
+    this.calibrate = true;
     this.cstatus = '校准中';
   }
 

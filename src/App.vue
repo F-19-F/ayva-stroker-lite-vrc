@@ -59,9 +59,9 @@
 
       <button
         id="vrchat-reset"
-        @click="vrchatReset()"
+        @click="vrchatCalibrate()"
       >
-        <span>VRChat Reset</span>
+        <span>VRChat calibrate</span>
       </button>
 
       <button
@@ -198,6 +198,9 @@ export default {
     const notification = useNotification();
     vrchatcontroller = new VRChatController();
     vrchatcontroller.bind(ayva);
+    // vrchatcontroller.on('calibrate-start', function(){
+      
+    // });
     return {
       notify: notification,
     };
@@ -367,7 +370,7 @@ export default {
 
     this.showReleaseNotes = this.globalSettings.load('show-release-notes-1.47.0') ?? true;
 
-    this.patreonPromo();
+    // this.patreonPromo();
   },
 
   methods: {
@@ -448,8 +451,8 @@ export default {
       this.startVRChatController();
     },
 
-    vrchatReset () {
-      vrchatcontroller.handlereset();
+    vrchatCalibrate () {
+      vrchatcontroller.handlecalibrate();
     },
 
     getBpm () {
