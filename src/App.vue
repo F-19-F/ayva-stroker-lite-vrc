@@ -198,9 +198,6 @@ export default {
     const notification = useNotification();
     vrchatcontroller = new VRChatController();
     vrchatcontroller.bind(ayva);
-    // vrchatcontroller.on('calibrate-start', function(){
-      
-    // });
     return {
       notify: notification,
     };
@@ -342,7 +339,7 @@ export default {
         this.stop();
       } else if (noModals && event.key === ' ') {
         // Toggle Free Play Mode on Space Click
-        if (this.mode === 'VRChat Play') {
+        if (this.mode.includes('VRChat Play')) {
           this.stop();
         } else {
           this.vrchatPlay();
@@ -361,7 +358,15 @@ export default {
     this.events.on('refresh-output-settings', () => {
       this.refreshOutputSettings();
     });
-
+    vrchatcontroller.on('calibratestatechange', (value) => {
+      if (value) {
+        this.mode = 'VRChat Play Calibrating';
+      } else if (vrchatcontroller.started) {
+        this.mode = 'VRChat Play';
+      } else {
+        this.mode = 'Stopped';
+      }
+    });
     emulator = this.deviceType === 'RUBJOY'
       ? this.createRubjoyEmulator(this.$refs.emulator)
       : new OSREmulator(this.$refs.emulator, { model: this.deviceType });

@@ -251,7 +251,7 @@ class VRChatController extends GeneratorBehavior {
         min_yaw: this.min_yaw,
       });
       console.log(`max_x ${this.max_x} max_y ${this.max_y} max_z ${this.max_z} min_x ${this.min_x} min_y ${this.min_y} min_z ${this.min_z}`);
-      this.cstatus = '校准';
+      this.$emit('calibratestatechange', false);
       return;
     }
     this.max_x = -999;
@@ -267,7 +267,7 @@ class VRChatController extends GeneratorBehavior {
     this.max_roll = -999;
     this.min_roll = 999;
     this.calibrate = true;
-    this.cstatus = '校准中';
+    this.$emit('calibratestatechange', true);
   }
 
   stop () {

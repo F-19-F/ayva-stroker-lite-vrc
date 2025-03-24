@@ -110,7 +110,7 @@ export default {
         label: 'Rubjoy',
       }],
 
-      deviceType: 'OSR2',
+      deviceType: 'SR6',
 
       connectionTypeOptions: [{
         key: 'serial',
