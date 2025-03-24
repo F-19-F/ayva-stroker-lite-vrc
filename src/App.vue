@@ -117,7 +117,7 @@
       </span>
       <span ref="logo">Ayva Stroker <span class="ayva">For VRChat</span>
       </span>
-      <span style="margin-left: 2rem">
+      <!-- <span style="margin-left: 2rem">
         <a
           href="https://discord.gg/WKdSFzjdcG"
           target="_blank"
@@ -125,7 +125,7 @@
         >
           <discord-icon style="width: 1.25rem" />
         </a>
-      </span>
+      </span> -->
     </div>
   </div>
 </template>
