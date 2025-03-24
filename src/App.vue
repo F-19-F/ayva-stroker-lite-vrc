@@ -5,14 +5,14 @@
   >
     <ayva-mode :mode="mode" />
 
-    <ayva-free-play
+    <!-- <ayva-free-play
       :mode="mode"
       :current-stroke-name="currentStrokeName"
       :style="hudStyle"
       @update-parameters="updateParameters"
       @update-strokes="updateStrokes"
       @select-stroke="selectStroke"
-    />
+    /> -->
 
     <div
       id="emulator"
@@ -41,13 +41,13 @@
         Home Device
       </button>
 
-      <button
+      <!-- <button
         id="start-free-play"
         :disabled="mode === 'Free Play' || mode === 'VRChat Play' || !strokes.length"
         @click="freePlay()"
       >
         <span>Free Play</span>
-      </button>
+      </button> -->
 
       <button
         id="vrchat-play"
@@ -73,7 +73,7 @@
       </button>
     </div>
 
-    <div id="current-bpm" :style="hudStyle">
+    <!-- <div id="current-bpm" :style="hudStyle">
       <div class="faux-bpm-track" />
 
       <ayva-slider
@@ -91,7 +91,7 @@
       >
         <span>Current BPM</span>
       </div>
-    </div>
+    </div> -->
 
     <ayva-modal :show="showReleaseNotes" lil-gui>
       <ayva-release-notes @close="onCloseReleaseNotes" />

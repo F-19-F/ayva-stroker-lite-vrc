@@ -21,7 +21,7 @@
           :class="axis"
         >
           <div class="axis">
-            {{ axis }}
+            {{ axis }} {{ `(${axestrans[axis]})` }}
           </div>
           <ayva-slider
             :options="sliderOptions"
@@ -71,6 +71,14 @@ export default {
   data () {
     return {
       axes: ['stroke', 'surge', 'sway', 'twist', 'roll', 'pitch'],
+      axestrans: {
+        stroke: '上下',
+        surge: '前后',
+        sway: '左右',
+        twist: '旋转',
+        roll: '左右倾',
+        pitch: '前后倾',
+      },
       sliderOptions: {
         start: [0.2, 0.8],
         tooltips: true,
