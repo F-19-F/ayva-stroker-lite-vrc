@@ -93,13 +93,13 @@
       </div>
     </div> -->
 
-    <ayva-modal :show="showReleaseNotes" lil-gui>
+    <!-- <ayva-modal :show="showReleaseNotes" lil-gui>
       <ayva-release-notes @close="onCloseReleaseNotes" />
-    </ayva-modal>
+    </ayva-modal> -->
 
-    <ayva-modal :show="showLicense" lil-gui>
+    <!-- <ayva-modal :show="showLicense" lil-gui>
       <ayva-license ref="licenseModal" @close="showLicense = false" />
-    </ayva-modal>
+    </ayva-modal> -->
 
     <div class="logo" :style="hudStyle">
       <span>
@@ -117,15 +117,15 @@
       </span>
       <span ref="logo">Ayva Stroker <span class="ayva">For VRChat</span>
       </span>
-      <!-- <span style="margin-left: 2rem">
+      <span style="margin-left: 2rem">
         <a
-          href="https://discord.gg/WKdSFzjdcG"
+          href="https://github.com/F-19-F/ayva-stroker-lite-vrc"
           target="_blank"
           style="display: flex; color: var(--ayva-blue);"
         >
-          <discord-icon style="width: 1.25rem" />
+          <github-mark-white-icon style="width: 1.25rem; height: 1.25rem;" viewBox="0 0 100 100" />
         </a>
-      </span> -->
+      </span>
     </div>
   </div>
 </template>
@@ -240,10 +240,6 @@ export default {
 
       showLicense: false,
 
-      patreonUrl: 'https://patreon.com/soritesparadox',
-
-      eggplantUrl: 'https://www.buymeacoffee.com/soritesparadox',
-
       events: { ...eventMixin },
 
       settingsDropdownOptions: [{
@@ -252,15 +248,6 @@ export default {
       }, {
         key: 'export',
         label: 'Export Settings',
-      }, {
-        key: 'release',
-        label: 'Release Notes',
-      }, {
-        key: 'license',
-        label: 'License',
-      }, {
-        key: 'patreon',
-        label: 'Patreon',
       }],
 
       globalSettings: new Storage('global-settings'),
@@ -373,7 +360,7 @@ export default {
 
     ayva.addOutput(emulator);
 
-    this.showReleaseNotes = this.globalSettings.load('show-release-notes-1.47.0') ?? true;
+    // this.showReleaseNotes = this.globalSettings.load('show-release-notes-1.47.0') ?? true;
 
     // this.patreonPromo();
   },
@@ -397,13 +384,14 @@ export default {
             window.location.reload();
           }
         });
-      } else if (key === 'release') {
-        this.showReleaseNotes = true;
-      } else if (key === 'license') {
-        this.showLicense = true;
-      } else if (key === 'patreon') {
-        window.open(this.patreonUrl, '_blank').focus();
       }
+      // } else if (key === 'release') {
+      //   this.showReleaseNotes = true;
+      // } else if (key === 'license') {
+      //   this.showLicense = true;
+      // } else if (key === 'patreon') {
+      //   window.open(this.patreonUrl, '_blank').focus();
+      // }
     },
 
     onCloseReleaseNotes () {
