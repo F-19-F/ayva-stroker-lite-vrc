@@ -1,8 +1,9 @@
-# ayva-stroker-lite
+# VRC stroker
 
-<a href="http://ayva-stroker-lite.io">Ayva Stroker Lite</a> is a small web based stroker app powered by Ayva.js and Vue 3.
+Stoker web UI for vrchat.
 
-A short guide can be found <a href="https://ayvajs.github.io/ayvajs-docs/tutorial-ayva-stroker-lite.html">here</a>.
+Forked from <a href="https://github.com/ayvasoftware/ayva-stroker-lite">Ayva Stroker Lite</a>
+
 
 ## Project Setup
 
