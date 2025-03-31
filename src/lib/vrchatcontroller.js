@@ -5,7 +5,10 @@ import {
 import { eventMixin } from './util.js';
 import Storage from './ayva-storage.js';
 
+import RealTimeAngleUnwrapper from './angleunwrapper.js';
+
 const storage = new Storage('vrc');
+
 class VRChatController extends GeneratorBehavior {
   constructor () {
     super();
@@ -38,6 +41,9 @@ class VRChatController extends GeneratorBehavior {
       this.max_yaw = -999;
       this.min_yaw = 999;
     }
+    this.unwrap_pitch = new RealTimeAngleUnwrapper(90);
+    this.unwrap_yaw = new RealTimeAngleUnwrapper(180);
+    this.unwrap_roll = new RealTimeAngleUnwrapper(180);
     this.started = false;
     this.connect();
   }
@@ -48,7 +54,10 @@ class VRChatController extends GeneratorBehavior {
     this.ws.onmessage = (event) => {
       // this.messages.push(event.data);
       const rawData = JSON.parse(event.data);
-      // console.log(`data is ${event.data}`)
+      // console.log(`data is ${event.data}`);
+      rawData.pitch = this.unwrap_pitch.unwrap(rawData.pitch);
+      rawData.yaw = this.unwrap_yaw.unwrap(rawData.yaw);
+      rawData.roll = this.unwrap_roll.unwrap(rawData.roll);
       this.applyData(rawData);
     };
     this.ws.onclose = () => {
@@ -89,6 +98,7 @@ class VRChatController extends GeneratorBehavior {
   }
 
   applyData (data) {
+    console.log(`pitch = ${data.pitch} yaw = ${data.yaw} roll = ${data.roll}`);
     if (this.calibrate) {
       if (data.x > this.max_x) {
         this.max_x = data.x;
@@ -212,8 +222,8 @@ class VRChatController extends GeneratorBehavior {
       { axis: 'sway', to: normalize(data.x, 'x'), speed: 100 },
       { axis: 'stroke', to: normalize(data.y, 'y'), speed: 100 },
       { axis: 'surge', to: normalize(data.z, 'z'), speed: 100 },
-      { axis: 'pitch', to: normalize(data.pitch, 'pitch'), speed: 100 },
-      { axis: 'twist', to: normalize(data.yaw, 'yaw'), speed: 100 },
+      { axis: 'pitch', to: 1 - normalize(data.pitch, 'pitch'), speed: 100 },
+      { axis: 'twist', to: 1 - normalize(data.yaw, 'yaw'), speed: 100 },
       { axis: 'roll', to: normalize(data.roll, 'roll'), speed: 100 }
     );
   }
@@ -251,6 +261,7 @@ class VRChatController extends GeneratorBehavior {
         min_yaw: this.min_yaw,
       });
       console.log(`max_x ${this.max_x} max_y ${this.max_y} max_z ${this.max_z} min_x ${this.min_x} min_y ${this.min_y} min_z ${this.min_z}`);
+      // console.log(`max_pitch ${this.max_pitch} max_yaw ${this.max_yaw} max_roll ${this.max_roll}`);
       this.$emit('calibratestatechange', false);
       return;
     }
@@ -267,6 +278,9 @@ class VRChatController extends GeneratorBehavior {
     this.max_roll = -999;
     this.min_roll = 999;
     this.calibrate = true;
+    this.unwrap_pitch = new RealTimeAngleUnwrapper(90);
+    this.unwrap_yaw = new RealTimeAngleUnwrapper(180);
+    this.unwrap_roll = new RealTimeAngleUnwrapper(180);
     this.$emit('calibratestatechange', true);
   }
 

@@ -567,7 +567,7 @@ export default {
     refreshOutputSettings () {
       const outputSettingsStorage = new Storage('output-settings');
 
-      const deviceType = outputSettingsStorage.load('deviceType') || 'OSR2';
+      const deviceType = outputSettingsStorage.load('deviceType') || 'SR6';
       const host = outputSettingsStorage.load('host') || 'localhost';
       const port = Number(outputSettingsStorage.load('port') || 80);
       const frequency = Number(outputSettingsStorage.load('frequency') || 50);
