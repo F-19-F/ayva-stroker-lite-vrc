@@ -98,7 +98,7 @@ class VRChatController extends GeneratorBehavior {
   }
 
   applyData (data) {
-    console.log(`pitch = ${data.pitch} yaw = ${data.yaw} roll = ${data.roll}`);
+    // console.log(`pitch = ${data.pitch} yaw = ${data.yaw} roll = ${data.roll}`);
     if (this.calibrate) {
       if (data.x > this.max_x) {
         this.max_x = data.x;
