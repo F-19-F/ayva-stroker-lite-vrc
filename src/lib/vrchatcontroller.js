@@ -6,6 +6,7 @@ import { eventMixin } from './util.js';
 import Storage from './ayva-storage.js';
 
 import RealTimeAngleUnwrapper from './angleunwrapper.js';
+import MedianFilter from './medianfilter.js'
 
 const storage = new Storage('vrc');
 
@@ -28,22 +29,23 @@ class VRChatController extends GeneratorBehavior {
       this.max_yaw = saveddata.max_yaw;
       this.min_yaw = saveddata.min_yaw;
     } else {
-      this.max_x = -999;
-      this.min_x = 999;
-      this.max_y = -999;
-      this.min_y = 999;
-      this.max_z = -999;
-      this.min_z = 999;
-      this.max_roll = -999;
-      this.min_roll = 999;
-      this.max_pitch = -999;
-      this.min_pitch = 999;
-      this.max_yaw = -999;
-      this.min_yaw = 999;
+      this.max_x = -Number.MAX_VALUE;
+      this.min_x = Number.MAX_VALUE;
+      this.max_y = -Number.MAX_VALUE;
+      this.min_y = Number.MAX_VALUE;
+      this.max_z = -Number.MAX_VALUE;
+      this.min_z = Number.MAX_VALUE;
+      this.max_roll = -Number.MAX_VALUE;
+      this.min_roll = Number.MAX_VALUE;
+      this.max_pitch = -Number.MAX_VALUE;
+      this.min_pitch = Number.MAX_VALUE;
+      this.max_yaw = -Number.MAX_VALUE;
+      this.min_yaw = Number.MAX_VALUE;
     }
     this.unwrap_pitch = new RealTimeAngleUnwrapper(90);
     this.unwrap_yaw = new RealTimeAngleUnwrapper(180);
     this.unwrap_roll = new RealTimeAngleUnwrapper(180);
+    this.filter = new MedianFilter(5);
     this.started = false;
     this.connect();
   }
@@ -58,7 +60,8 @@ class VRChatController extends GeneratorBehavior {
       rawData.pitch = this.unwrap_pitch.unwrap(rawData.pitch);
       rawData.yaw = this.unwrap_yaw.unwrap(rawData.yaw);
       rawData.roll = this.unwrap_roll.unwrap(rawData.roll);
-      this.applyData(rawData);
+      const finaldata = this.filter.filter(rawData);
+      this.applyData(finaldata);
     };
     this.ws.onclose = () => {
       console.log('WebSocket disconnected. Reconnecting...');
@@ -232,18 +235,18 @@ class VRChatController extends GeneratorBehavior {
     if (this.calibrate) {
       if (this.max_x === this.min_x || this.max_y === this.min_y || this.max_z === this.min_z) {
         alert('校准异常');
-        this.max_x = -999;
-        this.min_x = 999;
-        this.max_y = -999;
-        this.min_y = 999;
-        this.max_z = -999;
-        this.min_z = 999;
-        this.max_roll = -999;
-        this.min_roll = 999;
-        this.max_pitch = -999;
-        this.min_pitch = 999;
-        this.max_yaw = -999;
-        this.min_yaw = 999;
+        this.max_x = -Number.MAX_VALUE;
+        this.min_x = Number.MAX_VALUE;
+        this.max_y = -Number.MAX_VALUE;
+        this.min_y = Number.MAX_VALUE;
+        this.max_z = -Number.MAX_VALUE;
+        this.min_z = Number.MAX_VALUE;
+        this.max_roll = -Number.MAX_VALUE;
+        this.min_roll = Number.MAX_VALUE;
+        this.max_pitch = -Number.MAX_VALUE;
+        this.min_pitch = Number.MAX_VALUE;
+        this.max_yaw = -Number.MAX_VALUE;
+        this.min_yaw = Number.MAX_VALUE;
       }
       this.calibrate = false;
       storage.save('minmax', {
@@ -265,18 +268,18 @@ class VRChatController extends GeneratorBehavior {
       this.$emit('calibratestatechange', false);
       return;
     }
-    this.max_x = -999;
-    this.min_x = 999;
-    this.max_y = -999;
-    this.min_y = 999;
-    this.max_z = -999;
-    this.min_z = 999;
-    this.max_pitch = -999;
-    this.min_pitch = 999;
-    this.max_yaw = -999;
-    this.min_yaw = 999;
-    this.max_roll = -999;
-    this.min_roll = 999;
+    this.max_x = -Number.MAX_VALUE;
+    this.min_x = Number.MAX_VALUE;
+    this.max_y = -Number.MAX_VALUE;
+    this.min_y = Number.MAX_VALUE;
+    this.max_z = -Number.MAX_VALUE;
+    this.min_z = Number.MAX_VALUE;
+    this.max_pitch = -Number.MAX_VALUE;
+    this.min_pitch = Number.MAX_VALUE;
+    this.max_yaw = -Number.MAX_VALUE;
+    this.min_yaw = Number.MAX_VALUE;
+    this.max_roll = -Number.MAX_VALUE;
+    this.min_roll = Number.MAX_VALUE;
     this.calibrate = true;
     this.unwrap_pitch = new RealTimeAngleUnwrapper(90);
     this.unwrap_yaw = new RealTimeAngleUnwrapper(180);
