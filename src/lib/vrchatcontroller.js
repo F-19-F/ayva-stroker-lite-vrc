@@ -45,7 +45,7 @@ class VRChatController extends GeneratorBehavior {
     this.unwrap_pitch = new RealTimeAngleUnwrapper(90);
     this.unwrap_yaw = new RealTimeAngleUnwrapper(180);
     this.unwrap_roll = new RealTimeAngleUnwrapper(180);
-    this.filter = new MedianFilter(5);
+    this.filter = new MedianFilter(3);
     this.started = false;
     this.connect();
   }
