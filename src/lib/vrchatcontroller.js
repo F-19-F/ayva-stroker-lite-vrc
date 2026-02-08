@@ -52,7 +52,7 @@ class VRChatController extends GeneratorBehavior {
 
   connect () {
     console.log("connect now!");
-    this.ws = new WebSocket('ws://localhost:8000/');
+    this.ws = new WebSocket('ws://localhost:8000/sr6');
     this.ws.onmessage = (event) => {
       // this.messages.push(event.data);
       const rawData = JSON.parse(event.data);
